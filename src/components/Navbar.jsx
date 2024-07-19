@@ -1,8 +1,21 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import useAuth from '../hooks/useAuth';
+import useLogout from '../hooks/useLogout';
 
 const Navbar = () => {
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+    const { auth, tokenData } = useAuth();
+    const logout = useLogout();
+    const navigate = useNavigate();
+    
+    const handleLogin = () => {
+        navigate('/login');
+    };
+
+    const handleSignup = () => {
+        navigate('/signup');
+    };
 
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-body-secondary w-100" style={{width:"100%"}}>
@@ -23,22 +36,22 @@ const Navbar = () => {
             <div class="collapse navbar-collapse justify-content-end" 
             id="main-nav">
             <ul class="navbar-nav align-items-center">
-                {isLoggedIn ? (
+                {auth?.AccessToken ? (
                     <>
                     <li className="nav-item my-1">
-                        <span className="fw-bold text-secondary mx-4">Hi, Sayuranga</span>
+                        <span className="fw-bold text-secondary mx-4">Hi, {tokenData?.Name}</span>
                     </li>
                     <li class="nav-item ms-2 d-md-inline">
-                    <a href="/" class="btn btn-secondary">Logout</a>
+                        <button class="btn btn-secondary" onClick={logout}>Logout</button>
                     </li>
                     </>
                 ) : (
                     <>
                     <li class="nav-item ms-2 d-md-inline my-1">
-                    <a href="/login" class="btn btn-secondary">Login</a>
+                        <button class="btn btn-secondary" onClick={handleLogin}>Login</button>
                     </li>
                     <li class="nav-item ms-2 d-md-inline">
-                    <a href="/signup" class="btn btn-secondary">SignUp</a>
+                        <button class="btn btn-secondary" onClick={handleSignup}>SignUp</button>
                     </li>
                     </>
                 )}
