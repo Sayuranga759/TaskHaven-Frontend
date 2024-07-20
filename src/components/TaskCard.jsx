@@ -105,12 +105,16 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
               </div>
             </div>
             <p className="card-text">{task.description}</p>
-            <p className="card-text">
-              <small className="text-muted">Due: {formattedDate(new Date(task.dueDate))}</small>
-            </p>
-            <p className="card-text">
-              <small className="text-muted">Status: {task.status}</small>
-            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex">
+                <p className="card-text my-0">Due:&nbsp;</p>
+                <p className="fw-bolder my-0">{formattedDate(new Date(task.dueDate))}</p>
+              </div>
+              <div class="d-flex">
+                <p className="card-text my-0">Status:&nbsp;</p>
+                <div class="badge bg-success text-wrap">{task.status}</div>
+              </div>
+            </div>
           </>
         )}
       </div>

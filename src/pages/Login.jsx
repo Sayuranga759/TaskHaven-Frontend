@@ -8,20 +8,21 @@ import validator from "validator";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: Constants.EMPTY_STRING,
+    password: Constants.EMPTY_STRING,
     submitted: false,
   });
 
   const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+    email: Constants.EMPTY_STRING,
+    password: Constants.EMPTY_STRING,
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -33,8 +34,8 @@ const Login = () => {
   const validateUserInput = () => {
     let isValid = true;
     let newErrors = {
-      email: "",
-      password: "",
+      email: Constants.EMPTY_STRING,
+      password: Constants.EMPTY_STRING,
     };
 
     if (!validator.isEmail(formData.email)) {
@@ -62,16 +63,16 @@ const Login = () => {
         .post(apiUrl, userData)
         .then((response) => {
           if (response.status === 200) {
-            setAuth(response.data);
-            localStorage.setItem("auth", JSON.stringify(response.data));
-            toast.success("Login successful!");
+            setAuth(response.data.AccessToken);
+            Cookies.set(Constants.AUTH_COOKIE, response.data.AccessToken, { expires: 1 }); // Store the token in a cookie for 1 day
+            toast.success(Constants.LOGIN_SUCCESS);
             navigate("/");
           } else {
-            toast.error("Login failed.");
+            toast.error(Constants.LOGIN_FAILED_SHORT);
           }
         })
         .catch((error) => {
-          toast.error("Login failed. Please check your input.");
+          toast.error(Constants.LOGIN_FAILED_LONG);
         });
     }
   };

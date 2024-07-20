@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
+import Cookies from "js-cookie";
 import * as EndPoints from "../constants/end_points";
 
 const useLogout = () => {
@@ -8,7 +9,7 @@ const useLogout = () => {
 
   const logout = () => {
     setAuth(null);
-    localStorage.removeItem("auth");
+    Cookies.remove("auth");
     navigate(EndPoints.ROUTE_ENDPOINTS.LOGIN);
   };
 

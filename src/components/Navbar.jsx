@@ -36,7 +36,7 @@ const Navbar = () => {
             <div class="collapse navbar-collapse justify-content-end" 
             id="main-nav">
             <ul class="navbar-nav align-items-center">
-                {auth?.AccessToken ? (
+                {auth? (
                     <>
                     <li className="nav-item my-1">
                         <span className="fw-bold text-secondary mx-4">Hi, {tokenData?.Name}</span>

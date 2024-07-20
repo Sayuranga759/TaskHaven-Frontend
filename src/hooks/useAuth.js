@@ -7,8 +7,8 @@ const useAuth = () => {
     const [ tokenData, setTokenData]  = useState(null);
 
     useEffect(() => {
-        if (auth?.AccessToken) {
-            const tokenData = jwtDecode(auth.AccessToken);
+        if (auth) {
+            const tokenData = jwtDecode(auth);
             setTokenData(tokenData);
         }
     }, [auth]);

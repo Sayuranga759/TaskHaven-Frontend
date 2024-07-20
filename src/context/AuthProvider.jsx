@@ -1,21 +1,19 @@
 import React, { createContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 // Create the context
 const AuthContext = createContext({ auth: null, setAuth: () => {} });
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState(() => {
-        const storedAuth = localStorage.getItem('auth');
-        return storedAuth ? JSON.parse(storedAuth) : null;
-    });
+    const [auth, setAuth] = useState();
+    
 
-    useEffect(() => {
-        if (auth) {
-            localStorage.setItem('auth', JSON.stringify(auth));
-        } else {
-            localStorage.removeItem('auth');
-        }
-    }, [auth]);
+   useEffect(() => {
+    const storedAuth = Cookies.get('auth');
+    if (storedAuth) {
+      setAuth(storedAuth);
+    }
+  }, []);
 
     return (
         <AuthContext.Provider value={{ auth, setAuth }}>

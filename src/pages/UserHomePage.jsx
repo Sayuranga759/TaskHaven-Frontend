@@ -9,14 +9,14 @@ const sampleTasks = [
       title: 'Task 1',
       description: 'This is a short description for task 1',
       dueDate: '2024-07-01',
-      status: 'Pending'
+      status: 'To Do'
   },
   {
       id: 2,
       title: 'Task 2',
       description: 'This is a short description for task 2',
       dueDate: '2024-07-05',
-      status: 'In Progress'
+      status: 'On Hold'
   },
   {
       id: 3,
@@ -65,7 +65,6 @@ const UserHomePage = () => {
           // alignItems: "center",
         }}
       >
-
         <div class="container-md p-3 my-2 col-lg-6">
             <div class="my-2"><h2>Task List</h2></div>
             {tasks.map(task => (
