@@ -14,10 +14,10 @@ function App() {
       <Route path="/" element={<Layout/>}>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<UserHomePage/>} />
+        {/* <Route path="/home" element={<UserHomePage/>} /> */}
         {/* Protected Routes */}
         <Route element={<RequireAuth />}>
-          {/* <Route path="/home" element={<UserHomePage/>} /> */}
+          <Route path="/home" element={<UserHomePage/>} />
         </Route>
       </Route>
     </Routes>

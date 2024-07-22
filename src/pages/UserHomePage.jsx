@@ -1,55 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Task from "../components/TaskCard";
+import * as EndPoints from "../constants/end_points";
 import background from "../assets/background.jpg";
-
-
-const sampleTasks = [
-  {
-      id: 1,
-      title: 'Task 1',
-      description: 'This is a short description for task 1',
-      dueDate: '2024-07-01',
-      status: 'To Do'
-  },
-  {
-      id: 2,
-      title: 'Task 2',
-      description: 'This is a short description for task 2',
-      dueDate: '2024-07-05',
-      status: 'On Hold'
-  },
-  {
-      id: 3,
-      title: 'Task 3',
-      description: 'This is a short description for task 3',
-      dueDate: '2024-07-10',
-      status: 'Completed'
-  }
-];
+import AddTask from "../components/AddTask";
+import { axiosWithAuth } from "../services/apiBase";
 
 const UserHomePage = () => {
 
-  const [tasks, setTasks] = useState(sampleTasks);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const apiUrl = process.env.REACT_APP_API_URL + EndPoints.API_ENDPOINTS.MANAGE_TASKS
+    axiosWithAuth.get(apiUrl)
+      .then(response => {
+        setTasks(response.data);
+      })
+      .catch(error => {
+        console.error('Error occured when fetch tasks', error);
+      });
+  }, []);
 
   const handleEdit = (taskId, updatedTask) => {
-      // Logic to handle edit
-      const updatedTasks = tasks.map(task => {
-          if(task.id === taskId) {
-              return updatedTask;
-          }
-          return task;
+    const apiUrl = process.env.REACT_APP_API_URL + EndPoints.API_ENDPOINTS.MANAGE_TASKS;
+    console.log(updatedTask);
+
+    axiosWithAuth.put(apiUrl, updatedTask)
+      .then(response => {
+        const updatedTasks = tasks.map(task => 
+          task.TaskID === taskId ? updatedTask : task
+        );
+        setTasks(updatedTasks);
+      })
+      .catch(error => {
+        console.error('Error occured when updating task', error);
       });
-      setTasks(updatedTasks);
   };
 
-  const handleDelete = (id) => {
-      // Logic to handle delete
-      const updatedTasks = tasks.filter(task => task.id !== id);
-      setTasks(updatedTasks);
+  const handleDelete = (taskId) => {
+
+    const apiUrl = process.env.REACT_APP_API_URL + EndPoints.API_ENDPOINTS.MANAGE_TASKS;
+
+    axiosWithAuth.delete(apiUrl, { data: { TaskID: taskId } })
+      .then(response => {
+        const updatedTasks = tasks.filter(task => task.TaskID !== taskId);
+        setTasks(updatedTasks);
+      })
+      .catch(error => {
+        console.error('Error occured when deleting task', error);
+      });
   };
-
-
-
 
   return (
     <div>
@@ -65,13 +64,23 @@ const UserHomePage = () => {
           // alignItems: "center",
         }}
       >
-        <div class="container-md p-3 my-2 col-lg-6">
-            <div class="my-2"><h2>Task List</h2></div>
-            {tasks.map(task => (
-                <Task key={task.id} task={task} 
-                onEdit={(updatedTask) => handleEdit(task.id, updatedTask)} 
-                onDelete={() => handleDelete(task.id)} />
-            ))}
+        <div class="container">
+          <div class="row">
+            <div class="container-md p-3 mt-2 col-lg-6">
+              <div class="my-2"><h2>Is there anything to track ?</h2></div>
+              <AddTask setTasks={setTasks} tasks={tasks}  />
+            </div>
+          </div>   
+          <div class="row">
+            <div class="container-md p-3 my-2 col-lg-6">
+              <div class="my-2"><h2>Task List</h2></div>
+              {tasks.map(task => (
+                  <Task key={task.TaskID} task={task} 
+                  onEdit={(updatedTask) => handleEdit(task.TaskID, updatedTask)} 
+                  onDelete={() => handleDelete(task.TaskID)} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

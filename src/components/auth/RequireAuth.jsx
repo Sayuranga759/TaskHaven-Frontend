@@ -6,9 +6,9 @@ const RequireAuth = () => {
     const { auth } = useAuth();
     const location = useLocation();
 
-    return auth?.AccessToken
+    return auth
             ? <Outlet /> 
-            : <Navigate to={EndPoints.ROUTE_ENDPOINTS.home} state={{from: location}} replace />;
+            : <Navigate to={EndPoints.ROUTE_ENDPOINTS.USER_HOMEPAGE} state={{from: location}} replace />;
 };
 
 export default RequireAuth;

@@ -66,7 +66,7 @@ const Login = () => {
             setAuth(response.data.AccessToken);
             Cookies.set(Constants.AUTH_COOKIE, response.data.AccessToken, { expires: 1 }); // Store the token in a cookie for 1 day
             toast.success(Constants.LOGIN_SUCCESS);
-            navigate("/");
+            navigate(EndPoints.ROUTE_ENDPOINTS.USER_HOMEPAGE);
           } else {
             toast.error(Constants.LOGIN_FAILED_SHORT);
           }
